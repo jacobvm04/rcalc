@@ -1,14 +1,11 @@
-#![feature(unix_sigpipe)]
-
 use ariadne::{Color, Label, Report, ReportKind, Source};
 use chumsky::prelude::*;
 
-#[unix_sigpipe = "sig_dfl"] // needed for unix pipes to work correctly
 fn main() {
     let input = std::env::args().skip(1).collect::<Vec<_>>().join(" ");
     let (expr, errs) = rcalc::parser().parse(&input).into_output_errors();
 
-    if errs.len() > 0 {
+    if !errs.is_empty() {
         eprintln!("Failed to parse input expression");
 
         errs.into_iter().for_each(|e| {
