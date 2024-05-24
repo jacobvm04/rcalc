@@ -24,9 +24,7 @@ jobs:
         run: cargo install cargo-nextest
       - name: Install cargo-llvm-cov
         run: cargo install cargo-llvm-cov
-
       - uses: actions/checkout@v4
-        run: cargo clippy --verbose
       - name: Clippy check
         run: cargo clippy --verbose
       - name: Build
