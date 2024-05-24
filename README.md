@@ -2,9 +2,24 @@
 
 `rcalc` is a simple CLI calculator for basic floating point expressions. I built this project as a way to learn about writing [parser cominbators](https://en.wikipedia.org/wiki/Parser_combinator) in rust using `chumsky`.
 
+Usage
+
 ```sh
 > rcalc '1 + 1 * 2 / 4'
 1.4998751
+```
+
+Malformed input example
+
+```sh
+❯ rcalc 2 -+3
+Failed to parse input expression
+Error: found + expected '(', or '-'
+   ╭─[<unknown>:1:4]
+   │
+ 1 │ 2 -+3
+   │    ┬
+   │    ╰── found + expected '(', or '-'
 ```
 
 ## Installation
