@@ -1,0 +1,11 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc cd70bf6e30f8b6013f573b2f64e71652f94c3ca7e15f1084a92d95375bcec64b # shrinks to expr = Reciprocal(Integer(0.0))
+cc ad588bcd73e74834fda964cc65f5dc15ca8ece893d411c2981fed3b0e9db6f17 # shrinks to expr = Multiply(Integer(0.0), Integer(0.0))
+cc b4c4cf2614337aab91f01eeb44eb349e52e7d755c46baec0030c3c6d1eb98035 # shrinks to expr = Negated(Integer(-1699.9794))
+cc f052813d9a1e5a7e481aa2bbdff6b4a5665296896132b0d00f89d70c9ef6a6c3 # shrinks to expr = Multiply(Integer(-3.4907267e35), Negated(Integer(258046500.0)))
+cc 18f90e6031c6a0a0ae9a9a862434f7f499b80cdb430dac4507e589237dfeca47 # shrinks to expr = Multiply(Integer(-0.0), Multiply(Integer(-1.5946734e34), Integer(-217697400.0)))
