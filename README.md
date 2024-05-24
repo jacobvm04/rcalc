@@ -37,5 +37,5 @@ This project uses `proptest` for property based testing. To run the tests, simpl
 For code coverage, install `cargo-llvm-cov` and run
 
 ```sh
-cargo nextest run
+cargo llvm-cov
 ```
