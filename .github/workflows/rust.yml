@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install latest nightly
+    - name: Install latest nightly rust
       uses: actions-rs/toolchain@v1
       with:
         toolchain: nightly
         override: true
         components: rustfmt, clippy
+    - uses: actions/checkout@v4
     - name: Clippy check
       run: cargo clippy --verbose
-    - uses: actions/checkout@v4
     - name: Build
       run: cargo build --verbose
     - name: Run tests
