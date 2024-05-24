@@ -13,7 +13,7 @@ To install `rcalc`, clone this repo and run `cargo install --path .` in the clon
 
 ## Tests
 
-This project uses `proptest` for property based testing. Since one of the unit tests runs the `rcalc` binary directly, remember to run `cargo build` before running `cargo test`. To run the tests, simply run
+This project uses `proptest` for property based testing. To run the tests, simply run
 
 ```sh
 > cargo build
