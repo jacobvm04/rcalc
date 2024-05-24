@@ -20,7 +20,7 @@ fn arb_expr() -> impl Strategy<Value = Expr> {
 
     let leaf = prop_oneof![(-100000000f32..100000000f32).prop_map(Integer),];
 
-    leaf.prop_recursive(8, 256, 10, |inner| {
+    leaf.prop_recursive(128, 1024, 10, |inner| {
         prop_oneof![
             inner.clone().prop_map(|expr| Negated(expr.into())),
             inner.clone().prop_map(|expr| Reciprocal(expr.into())),

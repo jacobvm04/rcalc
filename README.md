@@ -31,6 +31,11 @@ To install `rcalc`, clone this repo and run `cargo install --path .` in the clon
 This project uses `proptest` for property based testing. To run the tests, simply run
 
 ```sh
-> cargo build
-> cargo test
+> cargo test # or `cargo nextest run` if you have `cargo-nextest` installed
+```
+
+For code coverage, install `cargo-llvm-cov` and run
+
+```sh
+cargo nextest run
 ```
