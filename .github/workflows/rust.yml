@@ -21,8 +21,8 @@ jobs:
         toolchain: nightly
         override: true
         components: rustfmt, clippy
-    - name: Clippy Check
-      run: cargo clippy check --verbose
+    - name: Clippy check
+      run: cargo clippy --verbose
     - uses: actions/checkout@v4
     - name: Build
       run: cargo build --verbose
