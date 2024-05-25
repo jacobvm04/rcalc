@@ -28,7 +28,7 @@ Error: found + expected '(', or '-'
 
 ## Installation
 
-To install `rcalc`, clone this repo and run `cargo install --path .` in the cloned directory. Do note that this project requires a `nightly` copy of rust to build.
+To install `rcalc`, clone this repo and run `cargo install --path .` in the cloned directory. Do note that this project requires rust `nightly` to build.
 
 ## Tests
 
