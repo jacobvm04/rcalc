@@ -59,6 +59,7 @@ pub fn parser<'src>(
     })
 }
 
+// TODO: Use Spans for error handling & reporting during evaluation
 const EPSILON: f64 = 0.00001;
 const ENTRYPOINT: &str = "run";
 
