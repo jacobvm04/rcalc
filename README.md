@@ -4,7 +4,7 @@ Have you ever been twiddling your thumbs waiting for your calculator to finish c
 
 `rcalc` is the fastest calculator for your terminal out there. `rcalc` carries out your math calculations 🔥 blazingly fast by compliling your expressions to Web Assembly on the fly 🔥 😎
 
-I built this project mostly as a way to learn about writing [parser cominbators](https://en.wikipedia.org/wiki/Parser_combinator) in rust using `chumsky` along with the basics of Web Assembly code generation and JIT execution using `wasm-encoder` and `wasmtime`.
+I built this project mostly as an excuse to learn about writing [parser cominbators](https://en.wikipedia.org/wiki/Parser_combinator) in rust using `chumsky` along with the basics of building a JIT compiler targeting Web Assembly using `wasm-encoder` and `wasmtime`.
 
 ### Usage
 
