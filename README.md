@@ -1,6 +1,6 @@
 # RCalc
 
-Have you ever been twiddling your thumbs waiting for your calculator to finish calculating? Probably not, but here's an over-engineered solution anways 😎
+Have you ever been twiddling your thumbs waiting for your calculator to finish calculating? Probably not, but here's an over-engineered solution anway 😎
 
 `rcalc` is the fastest calculator for your terminal out there. `rcalc` carries out your math calculations 🔥 blazingly fast by compliling your expressions to Web Assembly on the fly 🔥
 
