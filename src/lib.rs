@@ -1,8 +1,15 @@
 use chumsky::prelude::*;
+use wasm_encoder::{
+    CodeSection, ExportKind, ExportSection, Function, FunctionSection, Instruction, Module,
+    TypeSection, ValType,
+};
+use wasmtime::{Engine, Instance, Module as WasmtimeModule, Store};
+
+use anyhow::{Context, Result};
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Expr {
-    Integer(f32),
+    Number(f64),
     Negated(Box<Expr>),
     Reciprocal(Box<Expr>),
     Add(Box<Expr>, Box<Expr>),
@@ -18,8 +25,8 @@ pub fn parser<'src>(
 
         let decimal = num
             .then(just(".").ignore_then(num))
-            .map(|(l, r)| Integer(format!("{}.{}", l, r).parse::<f32>().unwrap()))
-            .or(num.map(|s: &str| Integer(s.parse::<f32>().unwrap())));
+            .map(|(l, r)| Number(format!("{}.{}", l, r).parse::<f64>().unwrap()))
+            .or(num.map(|s: &str| Number(s.parse::<f64>().unwrap())));
 
         let atom = decimal.or(expr.delimited_by(just("("), just(")"))).padded();
 
@@ -52,12 +59,106 @@ pub fn parser<'src>(
     })
 }
 
-pub fn evaluate(expr: Expr) -> f32 {
+const EPSILON: f64 = 0.00001;
+const ENTRYPOINT: &str = "run";
+
+pub fn evaluate(expr: Expr) -> f64 {
     match expr {
-        Expr::Integer(num) => num,
+        Expr::Number(num) => num,
         Expr::Negated(expr) => -evaluate(*expr),
-        Expr::Reciprocal(expr) => 1.0 / (evaluate(*expr) + 0.00001), // TODO: Raise a divide by zero error during parsing
+        Expr::Reciprocal(expr) => 1.0 / (evaluate(*expr) + EPSILON), // TODO: Raise a divide by zero error during parsing
         Expr::Add(left, right) => evaluate(*left) + evaluate(*right),
         Expr::Multiply(left, right) => evaluate(*left) * evaluate(*right),
+    }
+}
+
+pub fn evaluate_jit(expr: Expr) -> Result<f64> {
+    let compiled = compile(expr);
+
+    let engine = Engine::default();
+    let module = WasmtimeModule::new(&engine, &compiled)
+        .context("Failed to load compiled expression into wasmtime")?;
+
+    let mut store = Store::new(&engine, ());
+    let instance = Instance::new(&mut store, &module, &[])
+        .context("Failed to instansiate compiled expression")?;
+
+    let run = instance
+        .get_func(&mut store, ENTRYPOINT)
+        .context("Failed to find `run` function in compiled expression")?;
+
+    let answer = run
+        .typed::<(), f64>(&store)
+        .context("Failed to type `run` function in compiled expression")?;
+
+    let answer = answer
+        .call(&mut store, ())
+        .context("Failed to execute `run` function in compiled expression")?;
+
+    Ok(answer)
+}
+
+fn compile(expr: Expr) -> Vec<u8> {
+    let mut module = Module::new();
+
+    // type section
+    let mut types = TypeSection::new();
+    types.function(vec![], vec![ValType::F64]);
+    module.section(&types);
+
+    // function section
+    let mut functions = FunctionSection::new();
+    functions.function(0); // function type index is 0 since it's the only type we've defined
+    module.section(&functions);
+
+    // export section
+    let mut exports = ExportSection::new();
+    exports.export(ENTRYPOINT, ExportKind::Func, 0); // function index is 0
+    module.section(&exports);
+
+    // code section
+    let mut codes = CodeSection::new();
+    let mut run = Function::new(vec![]);
+
+    codegen(&mut run, expr);
+    run.instruction(&Instruction::End);
+
+    codes.function(&run);
+    module.section(&codes);
+
+    let bytes = module.finish();
+    bytes
+}
+
+fn codegen(func: &mut Function, expr: Expr) {
+    match expr {
+        Expr::Number(num) => {
+            func.instruction(&Instruction::F64Const(num));
+        }
+        Expr::Negated(expr) => {
+            codegen(func, *expr);
+            func.instruction(&Instruction::F64Neg);
+        }
+        Expr::Reciprocal(expr) => {
+            func.instruction(&Instruction::F64Const(1.0));
+            codegen(func, *expr);
+
+            // TODO: instead of this, raise a divide by zero error
+            // add an epsilon
+            func.instruction(&Instruction::F64Const(EPSILON));
+            func.instruction(&Instruction::F64Add);
+
+            func.instruction(&Instruction::F64Div);
+        }
+        Expr::Add(left, right) => {
+            codegen(func, *left);
+            codegen(func, *right);
+            func.instruction(&Instruction::F64Add);
+        }
+        Expr::Multiply(left, right) => {
+            codegen(func, *left);
+            codegen(func, *right);
+            func.instruction(&Instruction::F64Mul);
+        }
     }
 }

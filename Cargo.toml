@@ -4,8 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.86"
 ariadne = "0.4.1"
 chumsky = { version="1.0.0-alpha.7",features=["std", "spill-stack", "memoization", "extension", "label", "sync", "nightly"] }
+wasm-encoder = "0.208.1"
+wasmtime = "21.0.1"
 
 [dev-dependencies]
 assert_cmd = "2.0.14"

@@ -1,7 +1,8 @@
+use anyhow::Context;
 use ariadne::{Color, Label, Report, ReportKind, Source};
 use chumsky::prelude::*;
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let input = std::env::args().skip(1).collect::<Vec<_>>().join(" ");
     let (expr, errs) = rcalc::parser().parse(&input).into_output_errors();
 
@@ -21,7 +22,9 @@ fn main() {
                 .unwrap()
         });
     } else {
-        let result = rcalc::evaluate(expr.unwrap());
+        let result = rcalc::evaluate_jit(expr.unwrap()).context("Failed to compile expression")?;
         println!("{}", result);
     }
+
+    Ok(())
 }
