@@ -1,8 +1,8 @@
 # RCalc
 
-Have you ever been twiddling your thumbs waiting for your calculator to finish calculating? Probably not, but here's an over-engineered solution anway 😎
+Have you ever been twiddling your thumbs waiting for your calculator to finish calculating? Probably not, but here's an over-engineered solution anyway
 
-`rcalc` is the fastest calculator for your terminal out there. `rcalc` carries out your math calculations 🔥 blazingly fast by compliling your expressions to Web Assembly on the fly 🔥
+`rcalc` is the fastest calculator for your terminal out there. `rcalc` carries out your math calculations 🔥 blazingly fast by compliling your expressions to Web Assembly on the fly 🔥 😎
 
 I built this project mostly as a way to learn about writing [parser cominbators](https://en.wikipedia.org/wiki/Parser_combinator) in rust using `chumsky` along with the basics of Web Assembly code generation and JIT execution using `wasm-encoder` and `wasmtime`.
 
