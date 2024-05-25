@@ -6,14 +6,14 @@ Have you ever been twiddling your thumbs waiting for your calculator to finish c
 
 I built this project mostly as a way to learn about writing [parser cominbators](https://en.wikipedia.org/wiki/Parser_combinator) in rust using `chumsky` along with the basics of Web Assembly code generation and JIT execution using `wasm-encoder` and `wasmtime`.
 
-Usage
+### Usage
 
 ```sh
 > rcalc '1 + 1 * 2 / 4'
 1.4998751
 ```
 
-Malformed input example
+### Malformed input example
 
 ```sh
 ❯ rcalc 2 -+3
