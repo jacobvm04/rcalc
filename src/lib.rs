@@ -62,6 +62,7 @@ pub fn parser<'src>(
 const EPSILON: f64 = 0.00001;
 const ENTRYPOINT: &str = "run";
 
+/// calculate the numerical result of an expression
 pub fn evaluate(expr: Expr) -> f64 {
     match expr {
         Expr::Number(num) => num,
@@ -72,6 +73,7 @@ pub fn evaluate(expr: Expr) -> f64 {
     }
 }
 
+/// calculate the numerical result of an expression via JIT compilation to Web Assembly. The generated Web Assembly module is executed via `wasmtime`.
 pub fn evaluate_jit(expr: Expr) -> Result<f64> {
     let compiled = compile(expr);
 
