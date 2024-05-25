@@ -115,7 +115,7 @@ fn compile(expr: Expr) -> Vec<u8> {
 
     // export section
     let mut exports = ExportSection::new();
-    exports.export(ENTRYPOINT, ExportKind::Func, 0); // function index is 0
+    exports.export(ENTRYPOINT, ExportKind::Func, 0); // function index is 0, same logic
     module.section(&exports);
 
     // code section
